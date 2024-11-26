@@ -1,0 +1,58 @@
+name: Node.js Package
+
+on:
+  push:
+    branches:
+      - main  # Run on push to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # The operating system to run the job on
+
+    steps:
+      - name: Step 1  
+        run: echo "This is workflow 1"
+          
+      #  Checkout code from the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      #  Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Specify the Node.js version
+
+      #  Install dependencies using npm ci (clean install)
+      - name: Install dependencies
+        run: npm ci
+
+      # Run tests
+      - name: Run tests
+        run: npm test
+
+  publish-npm:
+    needs: build  
+    runs-on: ubuntu-latest  # The operating system to run the job on
+
+    steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'  # Specify the Node.js version
+          registry-url: https://registry.npmjs.org/  
+
+      # Step 3: Install dependencies using npm ci 
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 4: Publish package to npm registry
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}  # Use the NPM authentication token from secrets
