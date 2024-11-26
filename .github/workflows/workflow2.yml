@@ -26,8 +26,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t myusername/myapp:latest .  # Replace with your Docker Hub repository and image name
+          docker build -t nogayedieng/myapp:latest .  # Replace with your Docker Hub repository and image name
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push myusername/myapp:latest  # Replace with your Docker Hub repository and image name
+          docker push nogayedieng/myapp:latest  # Replace with your Docker Hub repository and image name
